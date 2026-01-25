@@ -5,7 +5,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import api from "../../api";
 import { usePlayer } from "../../hooks/usePlayer";
 import BottomNav from "../../components/layout/BottomNav";
-import searchIcon from '../../assets/icons/sound/main/search-icon.svg';
+import searchIcon from '../../assets/icons/sound/main/search_icon.svg';
+import addButton from '../../assets/icons/sound/main/add_button.svg';
 
 interface Sound {
   soundId: number;
@@ -168,29 +169,52 @@ function SoundMain(): React.ReactElement {
           />
         </div>
       </div>
-      <NavLink to="/sound/new">+</NavLink>
       <h3>목록</h3>
-      <select name="sortBy" className="form-select" onChange={handleSortByChange}>
-        <option value="latest">최신순</option>
-        <option value="popularity">인기순</option>
-      </select>
+      <div className="list-header">
+        <div className="sort-wrapper">
+          <select name="sortBy" className="sort-dropdown" onChange={handleSortByChange}>
+              <option value="latest">최신순</option>
+              <option value="popularity">인기순</option>
+          </select>
+          <span className="dropdown-arrow"></span>
+        </div>
+        <NavLink to="/sound/new">
+            <img src={addButton} alt="추가" className="add-button" />
+        </NavLink>
+      </div>
       <div className="sound-list">
         {sounds.map(sound => (
           <div className="sound-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
-            {sound.tags && sound.tags.length > 0 && (
-              <span className="sound-tag">{sound.tags[0]}</span>
-            )}
-            <img src={sound.thumbnailUrl} alt={sound.title} />
-            <h4>{sound.title}</h4>
-            <p className="uploader-name">{sound.uploader}</p>
-            <span 
-              className={`favorite-star ${favoriteIds.has(sound.soundId) ? 'active' : ''}`}
-              onClick={(e) => handleFavoriteToggle(e, sound.soundId)}
-            >
-              {favoriteIds.has(sound.soundId) ? '★' : '☆'}
-            </span>
+              {/* 태그 - 모든 태그 표시 */}
+              {sound.tags && sound.tags.length > 0 && (
+                  <div className="sound-tags">
+                      {sound.tags.map((tag, index) => (
+                          <span className="sound-tag" key={index}>{tag}</span>
+                      ))}
+                  </div>
+              )}
+              
+              {/* 즐겨찾기 별 */}
+              <span 
+                  className={`favorite-star ${favoriteIds.has(sound.soundId) ? 'active' : ''}`}
+                  onClick={(e) => handleFavoriteToggle(e, sound.soundId)}
+              >
+                  {favoriteIds.has(sound.soundId) ? '★' : '☆'}
+              </span>
+              
+              {/* 썸네일 */}
+              <img src={sound.thumbnailUrl} alt={sound.title} />
+              
+              {/* 제목 + 업로더 + 재생버튼 */}
+              <div className="card-info">
+                  <div className="card-text">
+                      <h4>{sound.title}</h4>
+                      <p className="uploader-name">{sound.uploader}</p>
+                  </div>
+                  <div className="play-button"></div>
+              </div>
           </div>
-        ))}
+      ))}
       </div>
       {/* 즐겨찾기 섹션 */}
       {favorites.length > 0 && (
