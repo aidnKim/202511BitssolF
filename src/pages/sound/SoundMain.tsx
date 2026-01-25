@@ -12,6 +12,7 @@ interface Sound {
   thumbnailUrl: string;
   fileUrl: string;
   uploader: string;
+  tags: string[];
 }
 
 interface Tag {
@@ -159,6 +160,9 @@ function SoundMain(): React.ReactElement {
       <div className="sound-list">
         {sounds.map(sound => (
           <div className="sound-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
+            {sound.tags && sound.tags.length > 0 && (
+              <span className="sound-tag">{sound.tags[0]}</span>
+            )}
             <img src={sound.thumbnailUrl} alt={sound.title} />
             <h4>{sound.title}</h4>
             <p className="uploader-name">{sound.uploader}</p>
@@ -178,6 +182,9 @@ function SoundMain(): React.ReactElement {
           <div className="sound-list">
             {favorites.map(sound => (
               <div className="sound-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
+                {sound.tags && sound.tags.length > 0 && (
+                  <span className="sound-tag">{sound.tags[0]}</span>
+                )}
                 <img src={sound.thumbnailUrl} alt={sound.title} />
                 <h4>{sound.title}</h4>
                 <p className="uploader-name">{sound.uploader}</p>
