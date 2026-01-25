@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import api from "../../api";
 import { usePlayer } from "../../hooks/usePlayer";
 import BottomNav from "../../components/layout/BottomNav";
+import searchIcon from '../../assets/icons/sound/main/search-icon.svg';
 
 interface Sound {
   soundId: number;
@@ -135,21 +136,16 @@ function SoundMain(): React.ReactElement {
             </label>
           ))}
         </div>
-        <input
-          type="text"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          className="form-control"
-          placeholder="검색어 입력..."
-        />
-        <button type="submit" className="btn btn-outline-secondary">
-          <i className="bi bi-search"></i>
-          <span className="visually-hidden">검색</span>
-        </button>
-        <button className="btn btn-outline-danger">
-          <i className="bi bi-arrow-clockwise"></i>
-          <span className="visually-hidden">새로고침</span>
-        </button>
+        <div className="search-wrapper">
+          <img src={searchIcon} alt="검색" className="search-icon" />
+          <input 
+            type="text" 
+            placeholder="검색어 입력..." 
+            className="search-input" 
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+        </div>
       </div>
       <NavLink to="/sound/new">+</NavLink>
       <h3>목록</h3>

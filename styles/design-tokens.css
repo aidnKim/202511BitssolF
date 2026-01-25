@@ -38,4 +38,13 @@
   --text-lg: 20px;
   --text-xl: 28px;
   --text-2xl: 36px;
+
+  /* Sound 페이지용 다크 테마 */
+  --sound-bg-primary: #1a1a1a;       /* 메인 배경 */
+  --sound-bg-secondary: #2a2a2a;     /* 카드/패널 배경 */
+  --sound-bg-tertiary: #3a3a3a;      /* 입력창/버튼 배경 */
+  --sound-text-primary: #ffffff;     /* 주요 텍스트 */
+  --sound-text-secondary: #888888;   /* 보조 텍스트 */
+  --sound-accent: #4CAF50;           /* 활성화 색상 (재생버튼 등) */
+  --sound-tag-bg: rgba(0, 0, 0, 0.6);/* 태그 배경 */
 }
