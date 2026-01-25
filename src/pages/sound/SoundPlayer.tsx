@@ -22,7 +22,9 @@ function SoundPlayer() {
         repeatMode,
         toggleRepeatMode,
         playNext,
-        playPrev
+        playPrev,
+        isShuffled,
+        toggleShuffle
     } = usePlayer();
     const navigate = useNavigate();
     // 즐겨찾기 상태 관리
@@ -142,6 +144,23 @@ function SoundPlayer() {
             <div className="controls">
                 <button 
                     className="controlButton"
+                    onClick={toggleShuffle}
+                    title={isShuffled ? '셔플 켜짐' : '셔플 꺼짐'}
+                    style={{ 
+                        backgroundColor: isShuffled ? '#1db954' : 'transparent',
+                        borderRadius: '50%',
+                        opacity: isShuffled ? 1 : 0.5
+                    }}
+                >
+                    🔀
+                </button>
+                <button className="controlButton" onClick={playPrev}>{"<<"}</button>
+                <button className="controlButton playPauseButton" onClick={togglePlayPause}>
+                    {isPlaying ? "❚❚" : "▶"}
+                </button>
+                <button className="controlButton" onClick={playNext}>{">>"}</button>
+                <button 
+                    className="controlButton"
                     onClick={toggleRepeatMode}
                     title={
                         repeatMode === 'none' ? '반복 없음' : 
@@ -155,11 +174,6 @@ function SoundPlayer() {
                 >
                     {repeatMode === 'one' ? '🔂' : '🔁'}
                 </button>
-                <button className="controlButton" onClick={playPrev}>{"<<"}</button>
-                <button className="controlButton playPauseButton" onClick={togglePlayPause}>
-                    {isPlaying ? "❚❚" : "▶"}
-                </button>
-                <button className="controlButton" onClick={playNext}>{">>"}</button>
             </div>
         </div>
     );

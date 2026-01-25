@@ -14,6 +14,8 @@ export interface PlayerContextType {
   duration: number;
   currentTime: number;
   repeatMode: 'none' | 'all' | 'one';
+  isShuffled: boolean;
+  toggleShuffle: () => void;
   playlist: Sound[];
   currentIndex: number;
   playSound: (soundId: number) => void;

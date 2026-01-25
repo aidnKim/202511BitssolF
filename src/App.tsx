@@ -16,6 +16,8 @@ function App() {
   const [currentTime, setCurrentTime] = useState(0);
   const [repeatMode, setRepeatMode] = useState<'none' | 'all' | 'one'>('none');
   const [playlist, setPlaylist] = useState<Sound[]>([]);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [shuffledPlaylist, setShuffledPlaylist] = useState<Sound[]>([]);
   const [currentIndex, setCurrentIndex] = useState(-1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -88,6 +90,7 @@ function App() {
 
   // 다음 곡 재생
 const playNext = () => {
+  const activePlaylist = isShuffled ? shuffledPlaylist : playlist;
   if (playlist.length === 0) return;
   
   let nextIndex = currentIndex + 1;
@@ -105,23 +108,26 @@ const playNext = () => {
   const nextSound = playlist[nextIndex];
     setCurrentIndex(nextIndex);
     playSound(nextSound.soundId);
+    setCurrentIndex(nextIndex);
+    playSound(nextSound.soundId);
   };
 
   // 이전 곡 재생
   const playPrev = () => {
+    const activePlaylist = isShuffled ? shuffledPlaylist : playlist;  
     if (playlist.length === 0) return;
     
     let prevIndex = currentIndex - 1;
     
     if (prevIndex < 0) {
       if (repeatMode === 'all') {
-        prevIndex = playlist.length - 1; // 마지막으로
+        prevIndex = activePlaylist.length - 1; // 마지막으로
       } else {
         prevIndex = 0; // 첫 곡 유지
       }
     }
     
-    const prevSound = playlist[prevIndex];
+    const prevSound = activePlaylist[prevIndex];
     setCurrentIndex(prevIndex);
     playSound(prevSound.soundId);
   };
@@ -184,6 +190,19 @@ const playNext = () => {
     });
   };
 
+  // 셔플 토글
+  const toggleShuffle = () => {
+    if (!isShuffled && playlist.length > 0) {
+      // 셔플 활성화: 현재 곡을 제외하고 나머지를 섞음
+      const current = playlist[currentIndex];
+      const others = playlist.filter((_, i) => i !== currentIndex);
+      const shuffled = others.sort(() => Math.random() - 0.5);
+      // 현재 곡을 맨 앞에 두고 나머지는 섞인 순서로
+      setShuffledPlaylist([current, ...shuffled]);
+    }
+    setIsShuffled(prev => !prev);
+  };
+
   const contextValue = {
     currentSound,
     isPlaying,
@@ -198,6 +217,8 @@ const playNext = () => {
     seekTo,
     stopSound,
     toggleRepeatMode,
+    isShuffled,
+    toggleShuffle,
     playNext,
     playPrev,
   };
