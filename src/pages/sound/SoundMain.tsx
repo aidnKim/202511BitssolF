@@ -173,27 +173,30 @@ function SoundMain(): React.ReactElement {
       </div>
       {/* 즐겨찾기 섹션 */}
       {favorites.length > 0 && (
-        <>
+        <div className="favorites-section">
           <h3>즐겨 찾기</h3>
-          <div className="sound-list">
-            {favorites.map(sound => (
-              <div className="sound-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
-                {sound.tags && sound.tags.length > 0 && (
-                  <span className="sound-tag">{sound.tags[0]}</span>
-                )}
+          {favorites.map(sound => (
+            <div className="favorite-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
+              {/* 썸네일 + 재생 버튼 */}
+              <div className="thumbnail-container">
                 <img src={sound.thumbnailUrl} alt={sound.title} />
-                <h4>{sound.title}</h4>
-                <p className="uploader-name">{sound.uploader}</p>
-                <span 
-                  className="favorite-star active"
-                  onClick={(e) => handleFavoriteToggle(e, sound.soundId)}
-                >
-                  ★
-                </span>
+                <div className="play-overlay">▶</div>
               </div>
-            ))}
-          </div>
-        </>
+              
+              {/* 정보 */}
+              <div className="info">
+                {sound.tags && sound.tags.length > 0 && (
+                  <span className="tag-label">{sound.tags[0]}</span>
+                )}
+                <p className="title">{sound.title}</p>
+                <p className="uploader">{sound.uploader}</p>
+              </div>
+              
+              {/* 즐겨찾기 별 */}
+              <span className="star" onClick={(e) => handleFavoriteToggle(e, sound.soundId)}>★</span>
+            </div>
+          ))}
+        </div>
       )}
       <BottomNav />
     </>
