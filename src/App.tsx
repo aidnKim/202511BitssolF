@@ -55,6 +55,22 @@ function App() {
     }
   }, [currentSound?.fileUrl, isPlaying]);
 
+  // 10초마다 현재 재생 위치 저장
+  useEffect(() => {
+      if (!currentSound || !isPlaying) return;
+      
+      const interval = setInterval(() => {
+          if (audioRef.current) {
+              api.put(`/v1/sounds/${currentSound.soundId}/progress`, {
+                  lastPosition: Math.floor(audioRef.current.currentTime),
+                  duration: Math.floor(audioRef.current.duration)
+              }).catch(console.error);
+          }
+      }, 10000);  // 10초마다
+      
+      return () => clearInterval(interval);
+  }, [currentSound, isPlaying]);
+
   // 음악 재생 함수 - soundId로 음악 정보를 가져와서 재생
   const playSound = async (soundId: number) => {
     try {

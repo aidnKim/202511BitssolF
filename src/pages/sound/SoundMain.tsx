@@ -31,6 +31,7 @@ function SoundMain(): React.ReactElement {
   const [favoriteIds, setFavoriteIds] = useState<Set<number>>(new Set());
   const navigate = useNavigate();
   const { playSoundWithPlaylist } = usePlayer();
+  const [progressMap, setProgressMap] = useState<Map<number, { lastPosition: number, duration: number }>>(new Map());
 
   useEffect(() => {
     api.get<Tag[]>("/v1/tags")
@@ -47,6 +48,26 @@ function SoundMain(): React.ReactElement {
       })
       .catch(err => console.log(err));
   }, []);
+
+  // 진행률 불러오기
+  useEffect(() => {
+      api.get('/v1/sounds/progress')
+          .then(res => {
+              const map = new Map();
+              res.data.forEach((p: any) => {
+                  map.set(p.soundId, { lastPosition: p.lastPosition, duration: p.duration });
+              });
+              setProgressMap(map);
+          })
+          .catch(console.error);
+  }, []);
+
+  // 진행률 계산 함수
+  const getProgressPercent = (soundId: number) => {
+      const progress = progressMap.get(soundId);
+      if (!progress || progress.duration === 0) return 0;
+      return (progress.lastPosition / progress.duration) * 100;
+  };
 
   useEffect(() => {
     api.get<Sound[]>("/v1/sounds", {
@@ -190,6 +211,12 @@ function SoundMain(): React.ReactElement {
                 )}
                 <p className="title">{sound.title}</p>
                 <p className="uploader">{sound.uploader}</p>
+                {/* 진행률 바 */}
+                {progressMap.has(sound.soundId) && getProgressPercent(sound.soundId) > 0 && (
+                  <div className="progress-bar">
+                    <div className="progress" style={{ width: `${getProgressPercent(sound.soundId)}%` }}></div>
+                  </div>
+                )}
               </div>
               
               {/* 즐겨찾기 별 */}
