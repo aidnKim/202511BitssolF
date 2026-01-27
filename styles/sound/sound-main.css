@@ -207,10 +207,19 @@ h1 {
     height: 20px;
 }
 
-/* 즐겨찾기 섹션 */
+/* 즐겨찾기 섹션 - 가로 스크롤 */
+.favorites-section .sound-list,
 .favorites-section {
     margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
 }
+
 .favorites-section h3 {
     color: #ffffff;
     margin-bottom: 16px;
@@ -225,6 +234,8 @@ h1 {
     border-radius: 22px;
     margin-bottom: 12px;
     position: relative;
+    flex: 0 0 auto;      /* 줄어들지 않게 */
+    min-width: 280px;    /* 최소 너비 */
 }
 /* 썸네일 */
 .favorite-card .thumbnail-container {
@@ -299,6 +310,14 @@ h1 {
     border-radius: 2px;
 }
 
+.favorites-section::-webkit-scrollbar {
+    display: none;
+}
+
+.favorites-section {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
 /* 목록 헤더 - 드롭다운 + 추가 버튼 */
 .list-header {

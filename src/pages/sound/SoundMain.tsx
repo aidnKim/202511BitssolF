@@ -217,9 +217,9 @@ function SoundMain(): React.ReactElement {
       ))}
       </div>
       {/* 즐겨찾기 섹션 */}
+      <h3>즐겨 찾기</h3>
       {favorites.length > 0 && (
         <div className="favorites-section">
-          <h3>즐겨 찾기</h3>
           {favorites.map(sound => (
             <div className="favorite-card" key={sound.soundId} onClick={() => handleSoundClick(sound.soundId)}>
               {/* 썸네일 + 재생 버튼 */}
